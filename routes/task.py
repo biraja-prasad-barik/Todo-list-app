@@ -28,6 +28,25 @@ def add_task():
 
     return redirect(url_for('tasks.view_tasks'))
 
+@tasks_bp.route('/toggle/<int:task_id>', methods=["POST"])
+def toggle_status(task_id):
+    if 'user' not in session:
+        return redirect(url_for('auth.login'))
+
+    task = Task.query.get_or_404(task_id)
+    
+    # Cycle through statuses: Pending -> Working -> Done -> Pending
+    if task.status == 'Pending':
+        task.status = 'Working'
+    elif task.status == 'Working':
+        task.status = 'Done'
+    else:
+        task.status = 'Pending'
+    
+    db.session.commit()
+    flash(f'Task status updated to {task.status}', 'success')
+    return redirect(url_for('tasks.view_tasks'))
+
 @tasks_bp.route('/clear', methods=["POST"])
 def clear_task():
     if 'user' not in session:

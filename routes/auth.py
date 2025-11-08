@@ -17,7 +17,7 @@ def login():
             session['user'] = username
             flash('Login Successful!', 'success')
             # Login ke baad user ko tasks page ya home page par bhej dein
-            return redirect(url_for('tasks.index')) # Assume aapke tasks blueprint ka naam 'tasks' hai
+            return redirect(url_for('tasks.view_tasks'))
         else:
             flash('Invalid username and password', 'danger')
             # Agar login fail hua to wapas login page dikhayein
